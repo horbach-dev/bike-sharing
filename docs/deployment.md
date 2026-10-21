@@ -12,7 +12,7 @@
 1. В настройках репозитория откройте **Settings → Pages** и выберите **GitHub Actions** в качестве источника.
 2. Workflow `.github/workflows/deploy-web.yml` публикует фронтенд после каждого push в `main` и по ручному запуску.
 3. В **Settings → Secrets and variables → Actions → Variables** задайте:
-   - `VITE_API_BASE_URL` — например `https://api.example.com/api/v1`.
+   - `VITE_API_BASE_URL` — например `https://api.example.com/api/v1`. Пока переменная не задана, публикуется демо-каталог без отправки заявок и загрузки фото.
    - `VITE_GOOGLE_MAPS_API_KEY` — ключ Maps JavaScript API с ограничением по сайтам и разрешённым API.
    - `VITE_BASE_PATH` — необязательно. Для проектного адреса workflow сам использует `/<имя-репозитория>/`; для собственного домена задайте `/`.
 

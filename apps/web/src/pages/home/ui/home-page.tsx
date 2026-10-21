@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, buttonVariants } from "@/shared/ui/button";
+import { buttonVariants } from "@/shared/ui/button";
 import { contentApi, type Article, type HomeContent, type Story } from "@/shared/api/content";
 import { publicAsset } from "@/shared/lib/public-asset";
 import "./home-page.css";

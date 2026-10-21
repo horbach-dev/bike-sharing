@@ -13,3 +13,6 @@ coverage/
 # Keep the Telegram Mini App production bundle versioned alongside its source.
 !apps/web/dist/
 !apps/web/dist/**
+
+# Uploaded content media (mount persistent storage in production)
+apps/api/uploads/
