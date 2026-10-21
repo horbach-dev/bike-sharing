@@ -1,0 +1,73 @@
+name: Build and deploy API to DigitalOcean
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: digitalocean-api
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.image.outputs.name }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set image name
+        id: image
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}/api" >> "$GITHUB_OUTPUT"
+      - name: Log in to GitHub Container Registry
+        run: echo "$GITHUB_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and publish API image
+        run: |
+          docker build -f deploy/digitalocean/api.Dockerfile \
+            -t "$IMAGE:$GITHUB_SHA" -t "$IMAGE:latest" .
+          docker push "$IMAGE:$GITHUB_SHA"
+          docker push "$IMAGE:latest"
+        env:
+          IMAGE: ${{ steps.image.outputs.name }}
+
+  deploy:
+    if: vars.DO_API_DEPLOY_ENABLED == 'true'
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Prepare SSH access
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.DO_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+      - name: Copy deployment configuration
+        env:
+          DO_HOST: ${{ secrets.DO_HOST }}
+          DO_USER: ${{ secrets.DO_USER }}
+          DO_SSH_PORT: ${{ vars.DO_SSH_PORT || '22' }}
+        run: |
+          ssh -p "$DO_SSH_PORT" "$DO_USER@$DO_HOST" 'mkdir -p /opt/bike-sharing/deploy/digitalocean'
+          scp -P "$DO_SSH_PORT" deploy/digitalocean/compose.yml deploy/digitalocean/Caddyfile \
+            "$DO_USER@$DO_HOST:/opt/bike-sharing/deploy/digitalocean/"
+      - name: Run migrations and restart API
+        env:
+          DO_HOST: ${{ secrets.DO_HOST }}
+          DO_USER: ${{ secrets.DO_USER }}
+          DO_SSH_PORT: ${{ vars.DO_SSH_PORT || '22' }}
+          API_IMAGE: ${{ needs.publish.outputs.image }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          ssh -p "$DO_SSH_PORT" "$DO_USER@$DO_HOST" \
+            "cd /opt/bike-sharing && API_IMAGE='$API_IMAGE:$IMAGE_TAG' docker compose --env-file /etc/bike-sharing/api.env -f deploy/digitalocean/compose.yml pull api && API_IMAGE='$API_IMAGE:$IMAGE_TAG' docker compose --env-file /etc/bike-sharing/api.env -f deploy/digitalocean/compose.yml run --rm api pnpm --filter @bike-sharing/api db:migrate:deploy && API_IMAGE='$API_IMAGE:$IMAGE_TAG' docker compose --env-file /etc/bike-sharing/api.env -f deploy/digitalocean/compose.yml up -d --remove-orphans"

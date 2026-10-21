@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ScooterStatus {
+  AVAILABLE
+  IN_RIDE
+  PARKED
+  MAINTENANCE
+  OFFLINE
+}
+
+enum RideStatus {
+  ACTIVE
+  COMPLETED
+  REJECTED
+  CANCELLED
+}
+
+enum ListingCategory {
+  BIKE_SALE
+  BIKE_RENTAL
+  HOUSING_RENTAL
+}
+
+enum SubscriptionType {
+  HOUSING_TOP
+  BIKE_SALE_FEED
+}
+
+model Scooter {
+  id               String        @id @default(cuid())
+  code             String        @unique
+  model            String        @default("Honda Lead 125")
+  year             Int
+  plate            String?       @unique
+  status           ScooterStatus @default(AVAILABLE)
+  batteryPercent   Int?
+  fuelPercent      Int?
+  latitude         Float?
+  longitude        Float?
+  locationUpdatedAt DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  rides            Ride[]
+
+  @@index([status])
+}
+
+model Ride {
+  id              String     @id @default(cuid())
+  scooterId       String
+  scooter         Scooter    @relation(fields: [scooterId], references: [id])
+  status          RideStatus @default(ACTIVE)
+  startedAt       DateTime   @default(now())
+  endedAt         DateTime?
+  startLatitude   Float?
+  startLongitude  Float?
+  endLatitude     Float?
+  endLongitude    Float?
+  distanceKm      Float?
+  endRejected     Boolean    @default(false)
+  rejectionReason String?
+  createdAt       DateTime   @default(now())
+
+  @@index([status, startedAt])
+  @@index([scooterId, startedAt])
+}
+
+model ParkingZone {
+  id          String   @id @default(cuid())
+  name        String
+  // GeoJSON Polygon coordinates: [longitude, latitude] pairs.
+  polygon     Json
+  isNoParking Boolean  @default(true)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([active, isNoParking])
+}
+
+model ContentPage {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  html      String   @db.Text
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HomePageSettings {
+  id        Int      @id @default(1)
+  sections  Json
+  updatedAt DateTime @updatedAt
+}
+
+model Listing {
+  id            String           @id @default(cuid())
+  category      ListingCategory
+  title         String
+  description   String?          @db.Text
+  price         Decimal?         @db.Decimal(12, 2)
+  currency      String           @default("VND")
+  published     Boolean          @default(false)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  placements    TopPlacement[]
+  subscriptions Subscription[]
+
+  @@index([category, published, createdAt])
+}
+
+model Subscription {
+  id        String           @id @default(cuid())
+  listingId String
+  listing   Listing          @relation(fields: [listingId], references: [id])
+  type      SubscriptionType
+  startsAt  DateTime
+  endsAt    DateTime
+  active    Boolean          @default(true)
+  createdAt DateTime         @default(now())
+
+  @@index([type, active, endsAt])
+  @@index([listingId, active])
+}
+
+model TopPlacement {
+  id        String   @id @default(cuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  category  ListingCategory
+  position  Int
+  active    Boolean  @default(true)
+  startsAt  DateTime @default(now())
+  endsAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@unique([category, position, startsAt])
+  @@index([position, active, startsAt, endsAt])
+}
