@@ -10,3 +10,6 @@ coverage/
 .build/
 .pnpm-store/
 .idea/
+# Keep the Telegram Mini App production bundle versioned alongside its source.
+!apps/web/dist/
+!apps/web/dist/**
