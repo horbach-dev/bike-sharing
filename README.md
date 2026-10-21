@@ -50,6 +50,7 @@ pnpm dev
 ## Структура
 
 - `apps/web` — React + Vite, пользовательская страница и демо-админка.
+- `apps/web/dist` — сохранённая в Git production-сборка Telegram Mini App; пересобирается локально или workflow GitHub Pages.
 - `apps/api` — NestJS REST API, сейчас только health endpoint.
 - `deploy/digitalocean` — контейнерная конфигурация API и reverse proxy с HTTPS.
 - `.github/workflows` — отдельные workflow фронтенда и API.

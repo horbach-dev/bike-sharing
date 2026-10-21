@@ -81,7 +81,6 @@ export function AdminPage() {
 
   const inRide = scooters.filter((scooter) => scooter.status === "В поездке").length;
   const idle = scooters.filter((scooter) => scooter.status === "Стоит").length;
-  const service = scooters.filter((scooter) => scooter.status === "Сервис").length;
   const drivenKm = trips.filter((trip) => trip.status !== "Отклонена").reduce((total, trip) => total + trip.distance, 0);
   const tripAttempts = trips.length;
   const rejectedTrips = trips.filter((trip) => trip.status === "Отклонена").length;
