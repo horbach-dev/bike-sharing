@@ -70,6 +70,8 @@ model Ride {
   id              String     @id @default(cuid())
   scooterId       String
   scooter         Scooter    @relation(fields: [scooterId], references: [id])
+  userId          String?
+  user            AppUser?   @relation(fields: [userId], references: [id], onDelete: SetNull)
   status          RideStatus @default(ACTIVE)
   startedAt       DateTime   @default(now())
   endedAt         DateTime?

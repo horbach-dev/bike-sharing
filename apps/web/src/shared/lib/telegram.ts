@@ -1,5 +1,6 @@
 export interface TelegramWebApp {
   initData: string;
+  initDataUnsafe?: { user?: { username?: string; first_name?: string; last_name?: string } };
   colorScheme?: "light" | "dark";
   themeParams?: Record<string, string | undefined>;
   ready(): void;

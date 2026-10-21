@@ -19,6 +19,38 @@ export type Article = {
 };
 
 export type ListingCategory = "BIKE_RENTAL" | "BIKE_SALE" | "HOUSING_RENTAL";
+export type ListingSubmissionInput = {
+  category: ListingCategory;
+  title: string;
+  description: string;
+  price?: number;
+  currency: "VND" | "USD" | "RUB";
+  address: string;
+  district?: "north" | "center" | "south" | "outskirts";
+  latitude?: number;
+  longitude?: number;
+  areaSqm?: number;
+  bedrooms?: number;
+  bathrooms?: number;
+  hasTv?: boolean;
+  hasFridge?: boolean;
+  hasTables?: boolean;
+  amenities?: string[];
+  imageUrls: string[];
+  contact: string;
+};
+export type ListingFilters = {
+  search?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  currency?: string;
+  bedrooms?: string;
+  minArea?: string;
+  amenity?: string;
+  district?: string;
+  promotedOnly?: boolean;
+  sort?: "new" | "price-asc" | "price-desc";
+};
 export type Listing = {
   id: string;
   category: ListingCategory;
@@ -27,6 +59,7 @@ export type Listing = {
   price?: string | number | null;
   currency: string;
   address?: string | null;
+  district?: string | null;
   areaSqm?: number | null;
   bedrooms?: number | null;
   bathrooms?: number | null;
@@ -58,9 +91,11 @@ export type HomeContent = {
   housing: Listing[];
 };
 
-export const apiBase = (import.meta.env.VITE_API_URL as string | undefined) ?? "http://localhost:3001/api/v1";
+export const apiBase = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? (import.meta.env.DEV ? "http://localhost:3001/api/v1" : "");
+export const isContentApiConfigured = Boolean(apiBase);
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  if (!isContentApiConfigured) throw new Error("Серверный API ещё не подключён.");
   const response = await fetch(apiBase + path, {
     ...init,
     headers: { "content-type": "application/json", ...init?.headers },
@@ -72,11 +107,29 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 export const contentApi = {
   home: () => request<HomeContent>("/content/home"),
   stories: () => request<Story[]>("/content/stories"),
-  listings: (category: ListingCategory, cursor?: string, search?: string) => {
+  submitListing: (payload: ListingSubmissionInput) => request<{ id: string; published: boolean }>("/content/listings/submissions", { method: "POST", body: JSON.stringify(payload) }),
+  uploadListingMedia: async (file: File) => {
+    if (!isContentApiConfigured) throw new Error("Загрузка фото будет доступна после подключения API.");
+    const form = new FormData();
+    form.append("file", file);
+    const response = await fetch(apiBase + "/content/listing-media", { method: "POST", body: form });
+    if (!response.ok) throw new Error("API " + response.status + ": " + await response.text());
+    return response.json() as Promise<{ url: string; name: string; size: number; type: string }>;
+  },
+  listings: (category: ListingCategory, cursor?: string, filters: ListingFilters = {}) => {
     const query = new URLSearchParams({ category, limit: "12" });
     if (cursor) query.set("cursor", cursor);
-    if (search) query.set("search", search);
-    return request<{ items: Listing[]; nextCursor: string | null }>("/content/listings?" + query);
+    if (filters.search) query.set("search", filters.search);
+    if (filters.minPrice) query.set("minPrice", filters.minPrice);
+    if (filters.maxPrice) query.set("maxPrice", filters.maxPrice);
+    if (filters.currency) query.set("currency", filters.currency);
+    if (filters.bedrooms) query.set("bedrooms", filters.bedrooms);
+    if (filters.minArea) query.set("minArea", filters.minArea);
+    if (filters.amenity) query.set("amenity", filters.amenity);
+    if (filters.district) query.set("district", filters.district);
+    if (filters.promotedOnly) query.set("promotedOnly", "true");
+    if (filters.sort) query.set("sort", filters.sort);
+    return request<{ items: Listing[]; nextCursor: string | null; districtCounts?: Record<string, number> }>("/content/listings?" + query);
   },
   fleet: (lat?: number, lng?: number) => {
     const query = new URLSearchParams();
@@ -84,6 +137,7 @@ export const contentApi = {
     return request<FleetBike[]>("/content/fleet" + (query.size ? "?" + query : ""));
   },
   cashbackTiers: () => request<{ id: string; minimumCompletedTrips: number; cashbackPercent: string | number }[]>("/content/cashback/tiers"),
+  locations: () => request<ApprovedLocation[]>("/content/locations"),
   submitLocation: (payload: LocationSubmissionInput) => request<{ id: string; status: string }>("/content/locations", { method: "POST", body: JSON.stringify(payload) }),
 };
 
@@ -101,6 +155,16 @@ export type FleetBike = {
   distanceKm?: number | null;
   walkingMinutes?: number | null;
   drivingMinutes?: number | null;
+};
+
+export type ApprovedLocation = {
+  id: string;
+  title: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  category: string;
+  imageUrl?: string | null;
 };
 
 export type LocationSubmissionInput = {
