@@ -1,0 +1,135 @@
+:root {
+  --safe-top: max(
+    env(safe-area-inset-top, 0px),
+    var(--tg-safe-area-inset-top, 0px),
+    var(--tg-content-safe-area-inset-top, 0px),
+    var(--tg-viewport-safe-area-inset-top, 0px)
+  );
+  --safe-bottom: max(
+    22px,
+    env(safe-area-inset-bottom, 0px),
+    var(--tg-safe-area-inset-bottom, 0px),
+    var(--tg-content-safe-area-inset-bottom, 0px),
+    var(--tg-viewport-safe-area-inset-bottom, 0px)
+  );
+}
+
+html,
+body,
+#root {
+  scroll-padding-top: calc(var(--safe-top) + 12px);
+  scroll-padding-bottom: calc(var(--safe-bottom) + 12px);
+}
+
+#root :is(.home-shell, .service-shell, .admin-shell, .cms-shell, .investors-page, .wallet-shell, .brand-home) {
+  scroll-padding-top: calc(var(--safe-top) + 12px);
+  scroll-padding-bottom: calc(var(--safe-bottom) + 12px);
+}
+
+#root .home-shell {
+  padding-top: calc(24px + var(--safe-top));
+  padding-bottom: calc(30px + var(--safe-bottom));
+}
+
+#root .service-shell {
+  padding-top: calc(20px + var(--safe-top));
+  padding-bottom: calc(24px + var(--safe-bottom));
+}
+
+#root .admin-shell {
+  padding-top: calc(24px + var(--safe-top));
+  padding-bottom: calc(20px + var(--safe-bottom));
+}
+
+#root .admin-dashboard.admin-shell,
+#root .admin-dashboard.cms-shell {
+  padding-top: calc(20px + var(--safe-top));
+}
+
+#root .cms-shell {
+  padding-top: calc(18px + var(--safe-top));
+  padding-bottom: calc(24px + var(--safe-bottom));
+}
+
+#root .investors-page {
+  padding-top: calc(24px + var(--safe-top));
+  padding-bottom: calc(34px + var(--safe-bottom));
+}
+
+#root .wallet-shell {
+  padding-top: calc(18px + var(--safe-top));
+  padding-bottom: calc(24px + var(--safe-bottom));
+}
+
+#root .brand-home {
+  padding-top: calc(24px + var(--safe-top));
+  padding-bottom: calc(26px + var(--safe-bottom));
+}
+
+#root::before,
+#root::after {
+  position: fixed;
+  z-index: 80;
+  right: 0;
+  left: 0;
+  content: "";
+  pointer-events: none;
+  background: color-mix(in srgb, var(--background) 46%, transparent);
+  backdrop-filter: blur(18px) saturate(1.12);
+  -webkit-backdrop-filter: blur(18px) saturate(1.12);
+}
+
+#root::before {
+  top: 0;
+  height: var(--safe-top);
+}
+
+#root::after {
+  bottom: 0;
+  height: calc(var(--safe-bottom) + 8px);
+}
+
+@media (max-width: 900px) {
+  #root .admin-dashboard.admin-shell,
+  #root .admin-dashboard.cms-shell {
+    padding-top: calc(12px + var(--safe-top));
+  }
+}
+
+@media (max-width: 680px) {
+  #root .admin-shell {
+    padding-top: calc(14px + var(--safe-top));
+  }
+
+  #root .brand-home {
+    padding-top: calc(16px + var(--safe-top));
+    padding-bottom: calc(16px + var(--safe-bottom));
+  }
+}
+
+@media (max-width: 620px) {
+  #root .home-shell {
+    padding-top: calc(12px + var(--safe-top));
+    padding-bottom: calc(16px + var(--safe-bottom));
+  }
+
+  #root .service-shell {
+    padding-top: calc(12px + var(--safe-top));
+    padding-bottom: calc(20px + var(--safe-bottom));
+  }
+
+  #root .investors-page {
+    padding-top: calc(12px + var(--safe-top));
+    padding-bottom: calc(24px + var(--safe-bottom));
+  }
+}
+
+@media (max-width: 520px) {
+  #root .admin-shell {
+    padding-top: calc(14px + var(--safe-top));
+  }
+
+  #root .wallet-shell {
+    padding-top: calc(12px + var(--safe-top));
+  }
+}
