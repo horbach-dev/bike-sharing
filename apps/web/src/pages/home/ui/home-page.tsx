@@ -107,7 +107,7 @@ export function HomePage() {
       <div className="community-map-art" aria-hidden="true"><span className="map-water" /><i className="place-pin pin-one">☕</i><i className="place-pin pin-two">⌖</i><i className="place-pin pin-three">✦</i><span className="map-road road-one" /><span className="map-road road-two" /><b>NHATRANG<br />LOCAL MAP</b></div>
     </section>
 
-    <footer className="home-footer"><Link className="home-brand" to="/"><img src={publicAsset("brand/nha-trang-scoot-mark.png")} alt="" /><span><b>SCOOT</b><small>NHA TRANG</small></span></Link><span>Браузер · Telegram Mini App</span><Link to="/admin/content">Управление контентом ↗</Link></footer>
+    <footer className="home-footer"><Link className="home-brand" to="/"><img src={publicAsset("brand/nha-trang-scoot-mark.png")} alt="" /><span><b>SCOOT</b><small>NHA TRANG</small></span></Link><span>Браузер · Telegram Mini App</span><Link className="investor-link" to="/investors">Инвесторам</Link><Link to="/admin/content">Управление контентом ↗</Link></footer>
     {activeStory && <StoryViewer story={activeStory} onClose={() => setActiveStory(null)} />}
   </main>;
 }

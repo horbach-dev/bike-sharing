@@ -4,9 +4,11 @@ import { HomePage } from "@/pages/home";
 import { CatalogPage } from "@/pages/services/ui/catalog-page";
 import { SharingPage, CashbackPage, GuidesPage, GuideDetailPage, PlacesPage, PartnersPage } from "@/pages/services/ui/other-pages";
 import { AdminContentPage } from "@/pages/admin-content/ui/admin-content-page";
+import { InvestorsPage } from "@/pages/investors";
 
 export const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
+  { path: "/investors", element: <InvestorsPage /> },
   { path: "/admin", element: <AdminPage /> },
   { path: "/admin/content", element: <AdminContentPage /> },
   { path: "/sharing", element: <SharingPage /> },
