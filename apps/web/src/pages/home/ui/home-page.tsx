@@ -55,7 +55,7 @@ export function HomePage() {
       <Link className="home-brand" to="/" aria-label="Scoot Nha Trang — главная">
         <img src={publicAsset("brand/nha-trang-scoot-mark.png")} alt="" /><span><b>SCOOT</b><small>NHA TRANG</small></span>
       </Link>
-      <div className="home-top-actions"><span className="city-pill">☀ Нячанг, Вьетнам</span><Link className={buttonVariants({ variant: "outline", size: "sm" })} to="/admin/content">Админка</Link></div>
+      <div className="home-top-actions"><span className="city-pill">☀ Нячанг, Вьетнам</span></div>
     </header>
 
     <section className="home-welcome">
