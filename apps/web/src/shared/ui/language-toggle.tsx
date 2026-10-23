@@ -4,8 +4,8 @@ import { Button } from "@/shared/ui/button";
 import "./language-toggle.css";
 
 const languages: { value: AppLanguage; label: string }[] = [
-  { value: "ru", label: "RU" },
-  { value: "en", label: "EN" },
+  { value: "ru", label: "Русский" },
+  { value: "en", label: "English" },
 ];
 
 export function LanguageToggle() {
@@ -24,7 +24,7 @@ export function LanguageToggle() {
           aria-pressed={current === value}
           onClick={() => void i18n.changeLanguage(value)}
         >
-          {label}
+          {t(label)}
         </Button>
       ))}
     </div>

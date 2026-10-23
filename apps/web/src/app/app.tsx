@@ -6,14 +6,12 @@ import { HapticFeedbackProvider } from "@/app/providers/haptic-feedback-provider
 import { ScrollToTop } from "@/app/providers/scroll-to-top";
 import { BackSwipeNavigation } from "@/app/providers/back-swipe-navigation";
 import { QueryProvider } from "@/app/providers/query-provider";
-import { LanguageToggle } from "@/shared/ui/language-toggle";
 
 export function App() {
   return (
     <QueryProvider>
       <TelegramProvider>
         <HapticFeedbackProvider>
-          <LanguageToggle />
           <Suspense fallback={<div role="status">Scoot Nha Trang</div>}>
             <RouterProvider router={router} />
           </Suspense>

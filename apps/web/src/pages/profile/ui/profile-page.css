@@ -1,0 +1,150 @@
+.profile-hero {
+  margin-bottom: 17px;
+}
+
+.profile-hero .service-hero-icon svg {
+  width: 25px;
+  height: 25px;
+  stroke-width: 1.7;
+}
+
+.profile-account-card,
+.profile-settings-card,
+.profile-wallet-link {
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  background: var(--card);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+
+.profile-account-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 12px;
+  padding: 17px;
+}
+
+.profile-account-icon,
+.profile-settings-icon,
+.profile-wallet-icon {
+  display: grid;
+  width: 43px;
+  height: 43px;
+  flex: none;
+  place-items: center;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--primary) 11%, var(--background));
+  color: var(--primary);
+}
+
+.profile-account-icon svg,
+.profile-settings-icon svg,
+.profile-wallet-icon svg {
+  width: 21px;
+  height: 21px;
+  stroke-width: 1.8;
+}
+
+.profile-account-copy {
+  min-width: 0;
+}
+
+.profile-account-copy small {
+  color: var(--muted-foreground);
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .14em;
+}
+
+.profile-account-copy h2 {
+  overflow: hidden;
+  margin: 4px 0 3px;
+  color: var(--foreground);
+  font-size: 16px;
+  text-overflow: ellipsis;
+}
+
+.profile-account-copy p,
+.profile-settings-heading p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.profile-settings-card {
+  display: grid;
+  gap: 15px;
+  margin-bottom: 12px;
+  padding: 17px;
+}
+
+.profile-settings-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-settings-heading h2 {
+  margin: 0 0 3px;
+  color: var(--foreground);
+  font-size: 15px;
+}
+
+.profile-settings-note {
+  color: var(--muted-foreground);
+  font-size: 9px;
+}
+
+.profile-wallet-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.profile-wallet-link > svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  color: var(--muted-foreground);
+}
+
+.profile-wallet-icon {
+  width: 39px;
+  height: 39px;
+  background: #f6edcf;
+  color: #9c7417;
+}
+
+.profile-wallet-copy {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 3px;
+}
+
+.profile-wallet-copy b {
+  font-size: 12px;
+}
+
+.profile-wallet-copy small {
+  color: var(--muted-foreground);
+  font-size: 9px;
+}
+
+.profile-wallet-link:hover {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+}
+
+@media (max-width: 520px) {
+  .profile-hero { margin: 16px 0 13px; padding: 17px; }
+  .profile-account-card,
+  .profile-settings-card { padding: 14px; }
+  .profile-account-card { gap: 10px; }
+  .profile-account-icon,
+  .profile-settings-icon { width: 39px; height: 39px; border-radius: 12px; }
+}

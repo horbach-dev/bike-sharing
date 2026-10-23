@@ -9,6 +9,8 @@ import { SharingPage, CashbackPage, GuidesPage, GuideDetailPage, PlacesPage, Par
 import { AdminContentPage } from "@/pages/admin-content/ui/admin-content-page";
 import { InvestorsPage } from "@/pages/investors";
 import { WalletPage } from "@/pages/wallet";
+import { ProfilePage } from "@/pages/profile";
+import { PrimaryNavigationLayout } from "@/app/ui/primary-navigation";
 
 function pageRoute(path: string, page: ReactNode): RouteObject {
   return {
@@ -19,16 +21,22 @@ function pageRoute(path: string, page: ReactNode): RouteObject {
 }
 
 export const router = createBrowserRouter([
-  pageRoute("/", <HomePage />),
-  pageRoute("/investors", <InvestorsPage />),
-  pageRoute("/admin", <AdminPage />),
-  pageRoute("/admin/content", <AdminContentPage />),
-  pageRoute("/sharing", <SharingPage />),
-  pageRoute("/cashback", <CashbackPage />),
-  pageRoute("/guides", <GuidesPage />),
-  pageRoute("/guides/:slug", <GuideDetailPage />),
-  pageRoute("/places", <PlacesPage />),
-  pageRoute("/partners", <PartnersPage />),
-  pageRoute("/coins", <WalletPage />),
-  pageRoute("/:section", <CatalogPage />),
+  {
+    element: <PrimaryNavigationLayout />,
+    children: [
+      pageRoute("/", <HomePage />),
+      pageRoute("/investors", <InvestorsPage />),
+      pageRoute("/admin", <AdminPage />),
+      pageRoute("/admin/content", <AdminContentPage />),
+      pageRoute("/sharing", <SharingPage />),
+      pageRoute("/cashback", <CashbackPage />),
+      pageRoute("/guides", <GuidesPage />),
+      pageRoute("/guides/:slug", <GuideDetailPage />),
+      pageRoute("/places", <PlacesPage />),
+      pageRoute("/partners", <PartnersPage />),
+      pageRoute("/coins", <WalletPage />),
+      pageRoute("/profile", <ProfilePage />),
+      pageRoute("/:section", <CatalogPage />),
+    ],
+  },
 ], { basename: import.meta.env.BASE_URL });

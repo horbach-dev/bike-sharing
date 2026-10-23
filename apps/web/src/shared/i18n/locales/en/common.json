@@ -660,5 +660,20 @@
   "Настройки NhaCoin появятся после применения миграции 20261022150000_nhacoins.": "NhaCoin settings will appear after migration 20261022150000_nhacoins is applied.",
   "Stars не заданы": "Stars price not set",
   "USDT не задан": "USDT price not set",
-  "дней": "days"
+  "дней": "days",
+  "Профиль": "Profile",
+  "Основная навигация": "Main navigation",
+  "НАСТРОЙКИ ПРИЛОЖЕНИЯ": "APP SETTINGS",
+  "Настройки приложения": "App settings",
+  "Язык приложения": "App language",
+  "Выберите язык интерфейса.": "Choose your interface language.",
+  "Выбор сохраняется на этом устройстве.": "Your choice is saved on this device.",
+  "ГОСТЕВОЙ ДОСТУП": "GUEST ACCESS",
+  "АККАУНТ TELEGRAM": "TELEGRAM ACCOUNT",
+  "Гость": "Guest",
+  "Русский": "Russian",
+  "Кошелёк NhaCoin": "NhaCoin wallet",
+  "Профиль можно связать с Telegram через кошелёк NhaCoin.": "Connect your profile to Telegram through the NhaCoin wallet.",
+  "Открыть кошелёк": "Open wallet",
+  "Баланс, операции и вход через Telegram": "Balance, activity, and Telegram sign-in"
 }
