@@ -1,21 +1,34 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, type RouteObject } from "react-router-dom";
+import type { ReactNode } from "react";
+import { ErrorBoundary } from "@/app/providers/error-boundary";
+import { ErrorScreen } from "@/app/ui/error-screen";
 import { AdminPage } from "@/pages/admin";
 import { HomePage } from "@/pages/home";
 import { CatalogPage } from "@/pages/services/ui/catalog-page";
 import { SharingPage, CashbackPage, GuidesPage, GuideDetailPage, PlacesPage, PartnersPage } from "@/pages/services/ui/other-pages";
 import { AdminContentPage } from "@/pages/admin-content/ui/admin-content-page";
 import { InvestorsPage } from "@/pages/investors";
+import { WalletPage } from "@/pages/wallet";
+
+function pageRoute(path: string, page: ReactNode): RouteObject {
+  return {
+    path,
+    element: <ErrorBoundary>{page}</ErrorBoundary>,
+    errorElement: <ErrorScreen />,
+  };
+}
 
 export const router = createBrowserRouter([
-  { path: "/", element: <HomePage /> },
-  { path: "/investors", element: <InvestorsPage /> },
-  { path: "/admin", element: <AdminPage /> },
-  { path: "/admin/content", element: <AdminContentPage /> },
-  { path: "/sharing", element: <SharingPage /> },
-  { path: "/cashback", element: <CashbackPage /> },
-  { path: "/guides", element: <GuidesPage /> },
-  { path: "/guides/:slug", element: <GuideDetailPage /> },
-  { path: "/places", element: <PlacesPage /> },
-  { path: "/partners", element: <PartnersPage /> },
-  { path: "/:section", element: <CatalogPage /> },
+  pageRoute("/", <HomePage />),
+  pageRoute("/investors", <InvestorsPage />),
+  pageRoute("/admin", <AdminPage />),
+  pageRoute("/admin/content", <AdminContentPage />),
+  pageRoute("/sharing", <SharingPage />),
+  pageRoute("/cashback", <CashbackPage />),
+  pageRoute("/guides", <GuidesPage />),
+  pageRoute("/guides/:slug", <GuideDetailPage />),
+  pageRoute("/places", <PlacesPage />),
+  pageRoute("/partners", <PartnersPage />),
+  pageRoute("/coins", <WalletPage />),
+  pageRoute("/:section", <CatalogPage />),
 ], { basename: import.meta.env.BASE_URL });

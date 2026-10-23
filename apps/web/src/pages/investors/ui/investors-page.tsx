@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { WebBackButton } from "@/shared/ui/web-back-button";
 import { publicAsset } from "@/shared/lib/public-asset";
 import "./investors-page.css";
 
@@ -39,7 +40,7 @@ export function InvestorsPage() {
         <img src={publicAsset("brand/nha-trang-scoot-mark.png")} alt="" />
         <span><b>SCOOT</b><small>NHA TRANG</small></span>
       </Link>
-      <Link className="investors-back" to="/">← На главную</Link>
+      <WebBackButton className="investors-back" />
     </header>
 
     <section className="investors-intro">

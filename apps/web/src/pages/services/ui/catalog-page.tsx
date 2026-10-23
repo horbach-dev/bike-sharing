@@ -5,6 +5,7 @@ import { contentApi, type Listing, type ListingCategory } from "@/shared/api/con
 import { Button } from "@/shared/ui";
 import { ListingSubmissionForm } from "./listing-submission-form";
 import { publicAsset } from "@/shared/lib/public-asset";
+import { ServiceHeader } from "@/shared/ui/service-header";
 import "./service-pages.css";
 
 const sectionInfo: Record<string, { category: ListingCategory; title: string; eyebrow: string; intro: string; icon: string }> = {
@@ -170,7 +171,7 @@ export function CatalogPage() {
   }, [query.hasNextPage, query.isFetchingNextPage, query.fetchNextPage]);
 
   return <main className="service-shell">
-    <header className="service-top"><Link className="service-back" to="/">← Главная</Link><Link className="home-brand" to="/"><img src={publicAsset("brand/nha-trang-scoot-mark.png")} alt="" /><span><b>SCOOT</b><small>NHA TRANG</small></span></Link><span /></header>
+    <ServiceHeader />
     <section className="service-hero"><span className="service-eyebrow">{info.eyebrow}</span><div className="service-hero-row"><div><h1>{info.title}</h1><p>{info.intro}</p></div><span className="service-hero-icon">{info.icon}</span></div></section>
     <section className="listing-submit-cta"><div><b>{section === "housing" ? "Сдаёте жильё?" : "Есть байк для каталога?"}</b><span>{section === "housing" ? "Добавьте апартаменты с фото и точкой на карте." : "Предложите байк в аренду или на продажу."}</span></div><Button type="button" onClick={() => setSubmissionOpen((open) => !open)}>{submissionOpen ? "Закрыть форму" : section === "housing" ? "Разместить жильё" : "Разместить объявление"}</Button></section>
     {submissionOpen && <ListingSubmissionForm key={info.category} category={info.category} onClose={() => setSubmissionOpen(false)} />}

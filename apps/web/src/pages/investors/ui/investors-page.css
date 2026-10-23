@@ -3,7 +3,7 @@
 .investors-brand { display:flex; align-items:center; gap:9px; color:#174b3c; text-decoration:none; }
 .investors-brand img { width:46px; height:46px; object-fit:contain; }
 .investors-brand span { display:grid; gap:3px; line-height:1; }.investors-brand b { font-size:16px; letter-spacing:.14em; }.investors-brand small { color:#819083; font-size:8px; font-weight:800; letter-spacing:.23em; }
-.investors-back { color:#64816b; font-size:12px; text-decoration:none; }.investors-back:hover { text-decoration:underline; }
+.investors-back { border:0; background:transparent; padding:8px 0; color:#64816b; font:inherit; font-size:12px; cursor:pointer; }.investors-back:hover { text-decoration:underline; }
 .investors-intro { max-width:740px; margin:clamp(48px,9vh,100px) auto 38px; text-align:center; }
 .investors-kicker { display:inline-flex; align-items:center; gap:9px; color:#758a78; font-size:9px; font-weight:850; letter-spacing:.16em; }.investors-kicker i { width:7px; height:7px; border-radius:50%; background:#e7b756; box-shadow:0 0 0 4px #f8e9bb; }
 .investors-intro h1 { margin:15px 0 10px; color:#173f39; font-size:clamp(38px,6vw,64px); font-weight:650; line-height:.98; letter-spacing:-.065em; }.investors-intro p { max-width:600px; margin:0 auto; color:#708174; font-size:15px; line-height:1.7; }

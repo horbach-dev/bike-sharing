@@ -1,5 +1,8 @@
 import { useEffect } from "react";
+import { backButton } from "@tma.js/sdk-react";
 import { router } from "@/app/router";
+import { isTelegramMiniApp } from "@/shared/lib/telegram";
+import { navigateBackWithinApp } from "@/shared/lib/navigation";
 
 const EDGE_START_PX = 28;
 const BACK_SWIPE_PX = 76;
@@ -40,6 +43,30 @@ function isExcludedTarget(target: EventTarget | null) {
 export function BackSwipeNavigation() {
   useEffect(() => {
     let swipeStart: SwipeStart | null = null;
+    let unbindTelegramBackButton: VoidFunction | undefined;
+    let unsubscribeRouter: VoidFunction | undefined;
+    let telegramBackButtonMounted = false;
+
+    const navigateBack = () => navigateBackWithinApp(router.navigate, router.state.location.pathname);
+    const syncTelegramBackButton = (pathname: string) => {
+      if (!telegramBackButtonMounted) return;
+      if (pathname === "/") backButton.hide.ifAvailable();
+      else backButton.show.ifAvailable();
+    };
+
+    if (isTelegramMiniApp()) {
+      try {
+        if (backButton.isSupported()) {
+          backButton.mount();
+          telegramBackButtonMounted = true;
+          unbindTelegramBackButton = backButton.onClick(navigateBack);
+          syncTelegramBackButton(router.state.location.pathname);
+          unsubscribeRouter = router.subscribe((state) => syncTelegramBackButton(state.location.pathname));
+        }
+      } catch {
+        // Telegram clients without native BackButton support keep swipe navigation.
+      }
+    }
 
     const onTouchStart = (event: TouchEvent) => {
       if (event.touches.length !== 1 || isExcludedTarget(event.target)) {
@@ -82,11 +109,7 @@ export function BackSwipeNavigation() {
         return;
       }
 
-      if (typeof window.history.state?.idx === "number" && window.history.state.idx > 0) {
-        void router.navigate(-1);
-      } else if (router.state.location.pathname !== "/") {
-        void router.navigate("/");
-      }
+      navigateBack();
     };
 
     const onTouchCancel = () => {
@@ -99,6 +122,12 @@ export function BackSwipeNavigation() {
     window.addEventListener("touchcancel", onTouchCancel, { passive: true });
 
     return () => {
+      unsubscribeRouter?.();
+      unbindTelegramBackButton?.();
+      if (telegramBackButtonMounted) {
+        backButton.hide.ifAvailable();
+        backButton.unmount();
+      }
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);

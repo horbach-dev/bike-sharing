@@ -1,0 +1,11 @@
+.nhacoin-shortcut { display:inline-flex; align-items:center; gap:7px; min-height:40px; border:1px solid color-mix(in srgb,#d9a937 32%,var(--border)); border-radius:999px; background:color-mix(in srgb,#fff8de 88%,var(--card)); padding:4px 12px 4px 5px; color:#5f5124; text-decoration:none; box-shadow:0 4px 14px #b8831720; transition:transform .18s ease,box-shadow .18s ease; }
+.nhacoin-shortcut:hover { transform:translateY(-1px); box-shadow:0 7px 18px #b8831730; }
+.nhacoin-shortcut img { width:31px; height:31px; object-fit:contain; }
+.nhacoin-logo { position:absolute; top:50%; left:50%; z-index:1; display:grid; width:38px; height:38px; place-items:center; border-radius:50%; transform:translate(-50%,-50%); transition:transform .18s ease; }
+.nhacoin-logo:hover { transform:translate(-50%,-50%) scale(1.06); }
+.nhacoin-logo img { width:32px; height:32px; object-fit:contain; }
+.nhacoin-shortcut span { display:grid; gap:2px; line-height:1; }
+.nhacoin-shortcut b { font-size:11px; letter-spacing:.01em; }
+.nhacoin-shortcut small { color:#948042; font-size:8px; font-weight:850; letter-spacing:.14em; }
+[data-telegram-color-scheme="dark"] .nhacoin-shortcut { background:color-mix(in srgb,var(--tg-theme-secondary-bg-color,#263330) 92%,#ddac41); color:var(--tg-theme-text-color,#f2ead2); border-color:color-mix(in srgb,#d9a937 45%,var(--border)); }
+[data-telegram-color-scheme="dark"] .nhacoin-shortcut small { color:#e5c872; }
